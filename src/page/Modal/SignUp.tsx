@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
-
+import axios from "axios";
 interface SignUpType {
   email: string;
   password: string;
@@ -19,8 +19,14 @@ const SignUp = () => {
     getValues,
   } = useForm<SignUpType>({ mode: "onBlur" });
 
-  const onSubmitHandler = (data: SignUpType) => {
-    console.log(data);
+  const onSubmitHandler = async (data: SignUpType) => {
+    try {
+      await axios.post("http://10.58.52.174:8000/users/login", {
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -47,7 +53,7 @@ const SignUp = () => {
               <Text>password</Text>
               <SignUpInput
                 type="password"
-                placeholder="안정함"
+                placeholder="비밀번호 8자리 이상"
                 {...register("password", {
                   required: "* 비밀번호는 필수 입력입니다.",
                   minLength: {
@@ -62,7 +68,7 @@ const SignUp = () => {
               <Text>password</Text>
               <SignUpInput
                 type="password"
-                placeholder="안정함"
+                placeholder="비밀번호 재확인"
                 {...register("password_confirm", {
                   required: true,
                   validate: {

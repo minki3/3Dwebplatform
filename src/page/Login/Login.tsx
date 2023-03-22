@@ -5,14 +5,21 @@ import ModalPortal from "../Modal/ModalPortal";
 import SignUpModal from "../Modal/SignUp";
 import { Error, header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 interface SignInType {
   email: string;
   password: string;
 }
+export const API_KEY = process.env.REACT_APP_API_KEY;
+export const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,8 +30,21 @@ const Login = () => {
     getValues,
   } = useForm<SignInType>({ mode: "onBlur" });
 
-  const onSubmitHandler = (data: SignInType) => {
-    console.log(data);
+  const onSubmitHandler = async (data: SignInType) => {
+    try {
+      await axios
+        .post("http://10.58.52.174:8000/users/login", {
+          data,
+        })
+        .then((response) => {
+          console.log(response);
+          localStorage.setItem("accessToken", response.data.accessToken);
+          alert("환영합니다");
+          navigate("/main");
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -59,8 +79,8 @@ const Login = () => {
                 {...register("password", {
                   required: "* 비밀번호를 입력하세요.",
                   minLength: {
-                    value: 8,
-                    message: "* 비밀번호는 8자리 이상입니다.",
+                    value: 1,
+                    message: "* 비밀번호를 입력해주세요.",
                   },
                 })}
               ></Input>
@@ -94,7 +114,9 @@ const Login = () => {
         )}
         <SocialLoginArea>
           <Header>Social Login</Header>
-          <SocialLoginBox> KaKao Login</SocialLoginBox>
+          <Link to={KAKAO_AUTH_URL}>
+            <SocialLoginBox>KaKao Login</SocialLoginBox>
+          </Link>
         </SocialLoginArea>
       </LoginBox>
     </LoginPageContainer>
