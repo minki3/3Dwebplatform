@@ -1,17 +1,53 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 
 const Nav = () => {
+  const navigate = useNavigate();
+
+  const Logout = () => {
+    localStorage.removeItem("token");
+  };
+
   return (
-    <NavContainer>
-      <NavLogo src={logo} />
+    <>
+      <NavContainer>
+        <LogoContainer>
+          <NavLogo
+            src={logo}
+            onClick={() => {
+              navigate("/main");
+            }}
+          />
+        </LogoContainer>
 
-      <LoginOut>로그아웃</LoginOut>
-
+        {localStorage.accessToken ? (
+          <LoginOutBox>
+            <LoginOut
+              onClick={() => {
+                Logout();
+                navigate("/");
+              }}
+            >
+              로그아웃
+            </LoginOut>
+          </LoginOutBox>
+        ) : (
+          <LoginOutBox>
+            <LoginOut
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              로그인
+            </LoginOut>
+          </LoginOutBox>
+        )}
+      </NavContainer>
       <Outlet />
-    </NavContainer>
+    </>
   );
 };
 
@@ -28,10 +64,10 @@ const NavContainer = styled.div`
   top: 0;
   left: 0;
   background-color: white;
+  z-index: 1;
 `;
 
 const NavLogo = styled.img`
-  margin-left: 20px;
   width: 100px;
   height: 50px;
   cursor: pointer;
@@ -39,7 +75,21 @@ const NavLogo = styled.img`
 
 const LoginOut = styled.div`
   margin-left: 0px;
-  display: flex;
   font-size: 13px;
   font-weight: lighter;
+  margin: 15px;
+  cursor: pointer;
+`;
+
+const LoginOutBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  height: 100px;
+  margin-left: auto;
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 200px;
 `;

@@ -25,22 +25,24 @@ const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
-    setError,
-    watch,
-    getValues,
   } = useForm<SignInType>({ mode: "onBlur" });
 
   const onSubmitHandler = async (data: SignInType) => {
     try {
       await axios
-        .post("http://10.58.52.174:8000/users/login", {
+        .post("http://10.58.52.192:8000/users/login", {
           data,
         })
         .then((response) => {
           console.log(response);
           localStorage.setItem("accessToken", response.data.accessToken);
-          alert("환영합니다");
-          navigate("/main");
+          if (localStorage.accessToken) {
+            alert("환영합니다");
+            navigate("/main");
+          } else {
+            alert("회원정보와 다릅니다.");
+            navigate("/");
+          }
         });
     } catch (error) {
       console.log(error);
