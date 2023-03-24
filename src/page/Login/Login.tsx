@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
 import ModalPortal from "../Modal/ModalPortal";
 import SignUpModal from "../Modal/SignUp";
-import { Error, header } from "../../styles/mixin";
+import { header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useAppDispatch } from "../../store/Store";
+import { useAppSelector } from "../../store/Store";
+import { toggleActions } from "../../store/Toggle";
 
 interface SignInType {
   email: string;
@@ -17,8 +20,6 @@ export const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 const Login = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   const {
@@ -26,6 +27,14 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm<SignInType>({ mode: "onBlur" });
+
+  const dispatch = useAppDispatch();
+
+  const toggle = useAppSelector((state) => state.Toggle.isClicked);
+
+  const isOpend = () => {
+    dispatch(toggleActions.toggle());
+  };
 
   const onSubmitHandler = async (data: SignInType) => {
     try {
@@ -40,7 +49,7 @@ const Login = () => {
             alert("환영합니다");
             navigate("/main");
           } else {
-            alert("회원정보와 다릅니다.");
+            alert("아이디와 비밀번호가 틀립니다.");
             navigate("/");
           }
         });
@@ -92,17 +101,17 @@ const Login = () => {
           <LoginButton>join</LoginButton>
         </form>
         <SignUp
-          onClick={() => {
-            setIsOpen(true);
-          }}
+          // onClick={() => {
+          //   // setIsOpen(true);
+          //   isOpend();
+          // }}
+          onClick={isOpend}
         >
           SignUp
         </SignUp>
-        {isOpen ? (
+        {toggle ? (
           <ModalPortal
-            closePortal={() => {
-              setIsOpen(false);
-            }}
+            closePortal={isOpend}
             width="500px"
             height="500px"
             position="fixed"

@@ -8,7 +8,7 @@ const Nav = () => {
   const navigate = useNavigate();
 
   const Logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
   };
 
   return (

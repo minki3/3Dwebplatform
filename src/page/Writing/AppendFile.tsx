@@ -67,7 +67,7 @@ const AppendFileArea = styled.div`
 `;
 
 const Title = styled.span`
-  font-weight: bold;
+  cursor: default;
 `;
 
 const AppendLabel = styled.label`

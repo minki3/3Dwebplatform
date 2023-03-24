@@ -39,9 +39,6 @@ const Writing = () => {
     for (let i = 0; i < file.length; i++) {
       formData.append("image_url", file[i]);
     }
-    for (let value of formData.values()) {
-      console.log(value);
-    }
     try {
       if (!title && !content) return alert("제목과 내용을 입력해주세요");
       if (!title) return alert("제목을 입력해주세요");
@@ -130,6 +127,7 @@ const TitleContainer = styled.div`
 const Title = styled.div`
   width: 50px;
   font-weight: bold;
+  cursor: default;
 `;
 
 const TitleInput = styled.input`

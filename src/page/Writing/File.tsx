@@ -26,7 +26,7 @@ const FileContainer = styled.div`
 
 const FileName = styled.div`
   font-size: 13px;
-  font-weight: lighter;
+  font-weight: bold;
 `;
 
 const FileBox = styled.div`
