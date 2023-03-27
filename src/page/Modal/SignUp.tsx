@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+
 interface SignUpType {
   email: string;
   password: string;
