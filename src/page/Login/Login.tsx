@@ -7,8 +7,8 @@ import { header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { useAppDispatch } from "../../store/Store";
-import { useAppSelector } from "../../store/Store";
+import { useAppDispatch } from "../../store/store";
+import { useAppSelector } from "../../store/store";
 import { toggleActions } from "../../store/Toggle";
 
 interface SignInType {
@@ -39,7 +39,7 @@ const Login = () => {
   const onSubmitHandler = async (data: SignInType) => {
     try {
       await axios
-        .post("http://10.58.52.192:8000/users/login", {
+        .post("http://10.58.52.238:8000/users/login", {
           data,
         })
         .then((response) => {

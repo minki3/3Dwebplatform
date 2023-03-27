@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { API_KEY, REDIRECT_URI } from "./Login";
 
-export const BASE_URL = `http://10.58.52.192:8000/users/login/kakao`;
+export const BASE_URL = `http://10.58.52.238:8000/users/login/kakao`;
 
 const KakaoLogin = () => {
   const [searchParams] = useSearchParams();
