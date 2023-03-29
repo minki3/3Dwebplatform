@@ -37,6 +37,7 @@ export default Main;
 const MainContainer = styled.div`
   display: flex;
   margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 const MainMenu = styled.div`

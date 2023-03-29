@@ -10,6 +10,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { useAppSelector } from "../../store/store";
 import { toggleActions } from "../../store/Toggle";
+import { API } from "../../config";
 
 interface SignInType {
   email: string;
@@ -39,7 +40,7 @@ const Login = () => {
   const onSubmitHandler = async (data: SignInType) => {
     try {
       await axios
-        .post("http://10.58.52.238:8000/users/login", {
+        .post(`${API.login}`, {
           data,
         })
         .then((response) => {

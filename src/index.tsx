@@ -6,8 +6,15 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import "./fontAwesome";
 import { QueryClient, QueryClientProvider } from "react-query";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // 20 second
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
