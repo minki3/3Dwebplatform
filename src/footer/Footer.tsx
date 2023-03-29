@@ -9,7 +9,7 @@ const Footer = () => {
         <FooterLogo src={Logo} />
       </LogoContainer>
       <TextContainer>
-        <Text>우리 취업가능,,?ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ</Text>
+        <Text>...</Text>
       </TextContainer>
     </FooterContainer>
   );

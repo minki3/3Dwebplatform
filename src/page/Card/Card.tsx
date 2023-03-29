@@ -2,17 +2,35 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { allDataType } from "../../type";
 
-const Card = () => {
+const Card = ({
+  _id,
+  user_id,
+  title,
+  description,
+  image_url,
+  like_count,
+  user_email,
+}: allDataType) => {
+  const navigate = useNavigate();
   return (
-    <CardComponent>
-      <Image src={logo} />
+    <CardComponent
+      key={_id}
+      onClick={() => {
+        navigate(`/detail/${_id}`, {
+          state: { title, description, image_url },
+        });
+      }}
+    >
+      <Image src={image_url} alt="a" />
       <Informaitn>
-        <Title>타이틀</Title>
-        <Writer>작성자</Writer>
+        <Title>{title}</Title>
+        <Writer>{user_email}</Writer>
         <Like>
           <FontAwesomeIcon icon="heart" />
-          <LikeNums>좋아요 갯수</LikeNums>
+          <LikeNums>{like_count}</LikeNums>
         </Like>
       </Informaitn>
     </CardComponent>
@@ -22,19 +40,19 @@ const Card = () => {
 export default Card;
 
 const CardComponent = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 1px solid #d3d3d3;
   border-radius: 8px;
   width: 200px;
   height: 250px;
   border-radius: 8px;
-  margin: 10px;
   padding 15px;
+  margin: 10px;
   cursor: pointer;
-  :hover{
-    border : 1px solid black
+  :hover {
+    border: 1px solid black;
   }
 `;
 

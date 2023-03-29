@@ -21,7 +21,7 @@ function Router() {
         <Route element={<Layout />}>
           <Route path="/main" element=<Main /> />
           <Route path="/writing" element=<Writing /> />
-          <Route path="/Detail/:listId" element=<Detail /> />
+          <Route path="/Detail/:_id" element=<Detail /> />
         </Route>
       </Routes>
     </BrowserRouter>

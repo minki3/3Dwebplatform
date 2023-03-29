@@ -14,4 +14,4 @@ const AllSlice = createSlice({
 });
 
 export default AllSlice.reducer;
-export const saveAll = AllSlice.actions;
+export const { saveAll } = AllSlice.actions;

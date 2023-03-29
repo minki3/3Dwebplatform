@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { header } from "../../styles/mixin";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { API } from "../../config";
 
 interface SignUpType {
   email: string;
@@ -22,7 +23,7 @@ const SignUp = () => {
 
   const onSubmitHandler = async (data: SignUpType) => {
     try {
-      await axios.post("http://10.58.52.174:8000/users/login", {
+      await axios.post(`${API.login}`, {
         data,
       });
     } catch (error) {

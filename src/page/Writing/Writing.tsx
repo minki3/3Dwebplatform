@@ -6,6 +6,8 @@ import axios from "axios";
 import AppendFile from "./AppendFile";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
+import { Navigate } from "react-router-dom";
+import { API } from "../../config";
 
 // interface fileType {
 //   lastModified?: number | Blob;
@@ -44,7 +46,7 @@ const Writing = () => {
       if (!title) return alert("제목을 입력해주세요");
       if (!content) return alert("내용을 입력해주세요");
       if (file.length === 0) return alert("파일을 첨부해주세요");
-      await axios.post("http://10.58.52.192:8000/posts", formData, {
+      await axios.post(`${API.posts}`, formData, {
         headers: { Authorization: localStorage.accessToken },
       });
       alert("완료되었습니다.");
@@ -78,6 +80,11 @@ const Writing = () => {
     }),
     []
   );
+
+  if (!localStorage.accessToken) {
+    alert("로그인이 필요한 서비스입니다.");
+    return <Navigate to="/" />;
+  }
 
   return (
     <WritingContainer>
