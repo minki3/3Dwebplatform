@@ -16,7 +16,7 @@ const KakaoLogin = () => {
     try {
       await axios
         .get(
-          `${API}?grant_type=authorization_code&client_id=${API_KEY}&redirect_url=${REDIRECT_URI}&code=${code}`
+          `${API.kakaoLogin}?grant_type=authorization_code&client_id=${API_KEY}&redirect_url=${REDIRECT_URI}&code=${code}`
         )
         .then((response) => {
           if (!response.data.accessToken) return alert("로그인 실패");

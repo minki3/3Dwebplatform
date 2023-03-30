@@ -6,7 +6,9 @@ const GlobalStyle = createGlobalStyle`
 
   }
   body {
-    margin : 0
+    margin : 0;
+    margin-top : 100px;
+    margin-bottom : 100px
 
   }
   a {

@@ -10,6 +10,7 @@ import { saveAll } from "../../store/AllSlice";
 import PagenationButton from "./PagenationButton";
 import { API } from "../../config";
 import { allDataType } from "../../type";
+import { getAll } from "../../Query";
 
 const All = () => {
   const navigate = useNavigate();
@@ -19,15 +20,14 @@ const All = () => {
   const offset = (page - 1) * limit;
 
   const { data, error, isLoading } = useQuery(
-    "dataAll",
-    async () => {
-      const res = await axios(`${API.posts}`);
-      console.log(res.data.postDataInfo);
-      return res.data.postDataInfo;
-    },
-    { refetchOnMount: true, refetchOnWindowFocus: true }
+    ["dataAll", page],
+    () => getAll(page),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
-
+  console.log(`${API.posts}/${page}`);
   const writingHandler = () => {
     if (!localStorage.accessToken) {
       alert("로그인 후 이용해주세요.");
@@ -37,15 +37,9 @@ const All = () => {
     }
   };
 
-  // const { data, error, isLoading } = useQuery("dataAll", async () => {
-  //   const res = await axios("http://localhost:4000/all");
-  //   console.log(res.data);
-  //   return res.data;
-  // });
   // const allData = useAppSelector((state) => state.All);
   // console.log(allData);
   console.log(data);
-  if (!data) return <div>load</div>;
 
   if (error) return <div>error !</div>;
 
@@ -54,7 +48,7 @@ const All = () => {
   return (
     <AllContainer>
       <Gridcontainer>
-        {data.slice(offset, offset + limit).map((item: allDataType) => {
+        {data.map((item: allDataType) => {
           const {
             user_id,
             title,
@@ -80,14 +74,29 @@ const All = () => {
       <WritingContainer>
         <GoToWrite onClick={writingHandler}>글쓰기</GoToWrite>
       </WritingContainer>
-      <ButtonArea>
+      <div className="pages">
+        <button
+          disabled={page <= 1}
+          onClick={() => setPage((prev) => prev - 1)}
+        >
+          Previous page
+        </button>
+        <span>Page {page}</span>
+        <button
+          disabled={page >= 3}
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          Next page
+        </button>
+      </div>
+      {/* <ButtonArea>
         <PagenationButton
           total={data.length}
           limit={limit}
           page={page}
           setPage={setPage}
         />
-      </ButtonArea>
+      </ButtonArea> */}
     </AllContainer>
   );
 };
