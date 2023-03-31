@@ -7,7 +7,6 @@ import { allDataType } from "../../type";
 
 const Card = ({
   _id,
-  user_id,
   title,
   description,
   image_url,
@@ -20,7 +19,7 @@ const Card = ({
       key={_id}
       onClick={() => {
         navigate(`/detail/${_id}`, {
-          state: { title, description, image_url },
+          state: { title, description, image_url, user_email, _id },
         });
       }}
     >

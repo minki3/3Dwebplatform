@@ -8,7 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
 import { Navigate } from "react-router-dom";
 import { API } from "../../config";
-
+import { useMutation } from "react-query";
 // interface fileType {
 //   lastModified?: number | Blob;
 //   lastModifiedDate?: any;
@@ -27,34 +27,96 @@ const Writing = () => {
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
-  const paserContent = parse(content);
 
-  console.log(paserContent);
   const navigate = useNavigate();
-  console.log(file);
-  console.log(content);
 
-  const submit = async () => {
+  // const submit = async () => {
+  //   const formData = new FormData();
+  //   formData.append("title", title);
+  //   formData.append("description", content);
+  //   for (let i = 0; i < file.length; i++) {
+  //     formData.append("image_url", file[i]);
+  //   }
+  //   try {
+  //     if (!title && !content) return alert("제목과 내용을 입력해주세요");
+  //     if (!title) return alert("제목을 입력해주세요");
+  //     if (!content) return alert("내용을 입력해주세요");
+  //     if (file.length === 0) return alert("파일을 첨부해주세요");
+  //     await axios.post(`${API.posts}`, formData, {
+  //       headers: { Authorization: localStorage.accessToken },
+  //     });
+  //     alert("완료되었습니다.");
+  //     navigate("/main");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const mutationSubmit = async () => {
+  //   const formData = new FormData();
+  //   formData.append("title", title);
+  //   formData.append("description", content);
+  //   for (let i = 0; i < file.length; i++) {
+  //     formData.append("image_url", file[i]);
+  //   }
+
+  //   if (!title && !content) {
+  //     alert("제목과 내용을 입력해주세요");
+  //     throw new Error("오류");
+  //   }
+  //   if (!title) {
+  //     alert("제목을 입력해주세요");
+  //     throw new Error("오류");
+  //   }
+  //   if (!content) {
+  //     alert("제목을 입력해주세요");
+  //     throw new Error("오류");
+  //   }
+  //   if (file.length === 0) {
+  //     alert("파일을 첨부해주세요");
+  //     throw new Error("오류");
+  //   }
+  //   await axios.post(`${API.posts}`, formData, {
+  //     headers: { Authorization: localStorage.accessToken },
+  //   });
+  // };
+
+  // const { mutate } = useMutation(mutationSubmit, {
+  //   onSuccess: (e) => {
+  //     alert("등록되었습니다.");
+  //     navigate("/main");
+  //   },
+  //   onError: (error, variables, context) => {
+  //     console.log(error);
+  //     console.log(variables);
+  //     console.log(context);
+  //   },
+  // });
+  const mutationSubmit = async () => {
+    if (!title || !content || file.length === 0) {
+      alert("제목, 내용, 파일을 모두 입력해주세요.");
+      throw new Error("오류");
+    }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", content);
-    for (let i = 0; i < file.length; i++) {
-      formData.append("image_url", file[i]);
-    }
-    try {
-      if (!title && !content) return alert("제목과 내용을 입력해주세요");
-      if (!title) return alert("제목을 입력해주세요");
-      if (!content) return alert("내용을 입력해주세요");
-      if (file.length === 0) return alert("파일을 첨부해주세요");
-      await axios.post(`${API.posts}`, formData, {
-        headers: { Authorization: localStorage.accessToken },
-      });
-      alert("완료되었습니다.");
-      navigate("/main");
-    } catch (error) {
-      console.log(error);
-    }
+    file.forEach((f: any) => formData.append("image_url", f));
+
+    await axios.post(`${API.posts}`, formData, {
+      headers: { Authorization: localStorage.accessToken },
+    });
   };
+  const { mutate } = useMutation(mutationSubmit, {
+    onSuccess: () => {
+      alert("등록되었습니다.");
+      navigate("/main");
+    },
+    onError: (error, variables, context) => {
+      console.log(error);
+      console.log(variables);
+      console.log(context);
+    },
+  });
 
   // quill에서 사용할 모듈을 설정하는 코드
   // useMemo를 사용하지 않으면, 키를 입력할 때마다, imageHandler 때문에 focus가 계속 풀리게 됨.
@@ -107,7 +169,13 @@ const Writing = () => {
         style={{ height: "400px", width: "50%" }}
       />
       <SubmitContainer>
-        <Submit onClick={submit}>Submit</Submit>
+        <Submit
+          onClick={() => {
+            mutate();
+          }}
+        >
+          Submit
+        </Submit>
       </SubmitContainer>
     </WritingContainer>
   );
