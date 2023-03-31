@@ -3,12 +3,7 @@ import styled from "styled-components";
 import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import axios from "axios";
-import { useAppSelector } from "../../store/store";
 import { useAppDispatch } from "../../store/store";
-import { saveAll } from "../../store/AllSlice";
-import PagenationButton from "./PagenationButton";
-import { API } from "../../config";
 import { allDataType } from "../../type";
 import { getAll } from "../../Query";
 
@@ -27,7 +22,7 @@ const All = () => {
       refetchOnWindowFocus: false,
     }
   );
-  console.log(`${API.posts}/${page}`);
+
   const writingHandler = () => {
     if (!localStorage.accessToken) {
       alert("로그인 후 이용해주세요.");

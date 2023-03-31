@@ -9,3 +9,7 @@ export interface allDataType {
   _id?: string;
   user_email?: string;
 }
+
+export interface Post_IdType {
+  post_id: string;
+}

@@ -7,6 +7,7 @@ import Nav from "./nav/Nav";
 import Footer from "./footer/Footer";
 import Writing from "./page/Writing/Writing";
 import Detail from "./page/Detail/Detail";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -24,6 +25,7 @@ function Router() {
           <Route path="/Detail/:_id" element=<Detail /> />
         </Route>
       </Routes>
+      {/* <ReactQueryDevtools initialIsOpen={true} position="bottom-right" /> */}
     </BrowserRouter>
   );
 }

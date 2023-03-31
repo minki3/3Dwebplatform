@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 const Detail = () => {
   const location = useLocation();
 
-  const { title, description, image_url, user_email } = location.state;
+  const { title, description, image_url, user_email, _id } = location.state;
   return (
     <DetailContainer>
       <TitleContainer>
@@ -23,7 +23,7 @@ const Detail = () => {
       <ImageContainer>
         <Image src={image_url} alt="image"></Image>
       </ImageContainer>
-      <Comment></Comment>
+      <Comment post_id={_id}></Comment>
     </DetailContainer>
   );
 };

@@ -2,18 +2,39 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "react-query";
 import { API } from "../../config";
-const Comment = () => {
-  const [comment, setComment] = useState("");
+import axios from "axios";
+import { Post_IdType } from "../../type";
+import { error } from "console";
+
+const Comment = ({ post_id }: Post_IdType) => {
+  const [comment, setComment] = useState({ comment: "" });
   const [commentArea, setCommentArea] = useState<string[]>([]);
   const handleCommit = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
+    const { name, value } = e.target;
+    setComment({ ...comment, [name]: value });
   };
   console.log(comment);
   console.log(commentArea);
 
-  const handleCommentArea = () => {
-    setCommentArea(commentArea.concat(comment));
+  const hanldeSubmit = async () => {
+    if (!comment) {
+      alert("댓글을 입력하세요.");
+      throw new Error("오류");
+    }
+    await axios.post(`${API.comments}/${post_id}`, comment, {
+      headers: { Authorization: localStorage.accessToken },
+    });
   };
+  const { mutate } = useMutation(hanldeSubmit, {
+    onSuccess(data, variables, context) {
+      console.log(data);
+    },
+    onError(error, variables, context) {
+      console.log(error);
+      console.log(variables);
+      console.log(context);
+    },
+  });
 
   return (
     <CommentContainer>
@@ -26,9 +47,15 @@ const Comment = () => {
         <CommentInput
           placeholder="댓글을 입력해주세요."
           onChange={handleCommit}
-          value={comment}
+          name="comment"
         />
-        <Submit onClick={handleCommentArea}>입력</Submit>
+        <Submit
+          onClick={() => {
+            mutate();
+          }}
+        >
+          입력
+        </Submit>
       </CommentInputContainer>
     </CommentContainer>
   );

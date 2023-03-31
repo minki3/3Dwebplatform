@@ -19,7 +19,7 @@ const Card = ({
       key={_id}
       onClick={() => {
         navigate(`/detail/${_id}`, {
-          state: { title, description, image_url, user_email },
+          state: { title, description, image_url, user_email, _id },
         });
       }}
     >
