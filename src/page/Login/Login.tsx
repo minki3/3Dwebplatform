@@ -119,7 +119,7 @@ const Login = () => {
             top="50%"
             left="50%"
           >
-            <SignUpModal></SignUpModal>
+            <SignUpModal />
           </ModalPortal>
         ) : (
           ""
